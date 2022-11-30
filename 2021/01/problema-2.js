@@ -1,8 +1,8 @@
 const fs = require('fs')
 const { join } = require('path')
 
-// const file = fs.readFileSync(join(__dirname, 'sample-D01.txt'), 'utf8')
-const file = fs.readFileSync(join(__dirname, 'input-D01.txt'), 'utf8')
+// const file = fs.readFileSync(join(__dirname, 'sample.txt'), 'utf8')
+const file = fs.readFileSync(join(__dirname, 'input.txt'), 'utf8')
 
 const inputs = file.split('\n').map(n => Number(n))
 

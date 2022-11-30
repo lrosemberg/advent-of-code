@@ -2,21 +2,20 @@
 const fs = require('fs')
 const { join } = require('path')
 
-const file = fs.readFileSync(join(__dirname, 'input-D25.txt'), 'utf8')
-// const file = fs.readFileSync(join(__dirname, 'sample-D25.txt'), 'utf8')
+// const file = fs.readFileSync(join(__dirname, 'sample.txt'), 'utf8')
+const file = fs.readFileSync(join(__dirname, 'input.txt'), 'utf8')
 
-const linhas = file.split('\n')
-const matriz = linhas.map(linha => linha.split(''))
-const numLinhas = matriz.length
-const numCol = matriz[0].length
+const input = file.split('\n').map(linha => linha.split(''))
+const linhas = input.length
+const colunas = input[0].length
 
-function moveDireitaSePuder (antiga, nova, linha, coluna) {
+function moverDireita (antiga, nova, linha, coluna) {
   if (antiga[linha][coluna] !== '>') {
     return false
   }
 
   let destino = coluna + 1
-  if (destino >= numCol) destino = 0
+  if (destino >= colunas) destino = 0
 
   if (antiga[linha][destino] === '.') {
     nova[linha][destino] = '>'
@@ -26,13 +25,13 @@ function moveDireitaSePuder (antiga, nova, linha, coluna) {
   return false
 }
 
-function moveBaixoSePuder (antiga, nova, linha, coluna) {
+function moverBaixo (antiga, nova, linha, coluna) {
   if (antiga[linha][coluna] !== 'v') {
     return false
   }
 
   let destino = linha + 1
-  if (destino >= numLinhas) destino = 0
+  if (destino >= linhas) destino = 0
 
   if (antiga[destino][coluna] === '.') {
     nova[destino][coluna] = 'v'
@@ -44,11 +43,9 @@ function moveBaixoSePuder (antiga, nova, linha, coluna) {
 
 function andaDireita (antiga, nova) {
   let mudou = false
-  for (let l = 0; l < numLinhas; l++) {
-    for (let c = 0; c < numCol; c++) {
-      if (moveDireitaSePuder(antiga, nova, l, c)) {
-        mudou = true
-      }
+  for (let l = 0; l < linhas; l++) {
+    for (let c = 0; c < colunas; c++) {
+      mudou = moverDireita(antiga, nova, l, c) || mudou
     }
   }
   return mudou
@@ -56,11 +53,9 @@ function andaDireita (antiga, nova) {
 
 function andaBaixo (antiga, nova) {
   let mudou = false
-  for (let c = 0; c < numCol; c++) {
-    for (let l = 0; l < numLinhas; l++) {
-      if (moveBaixoSePuder(antiga, nova, l, c)) {
-        mudou = true
-      }
+  for (let c = 0; c < colunas; c++) {
+    for (let l = 0; l < linhas; l++) {
+      mudou = moverBaixo(antiga, nova, l, c) || mudou
     }
   }
   return mudou
@@ -68,9 +63,9 @@ function andaBaixo (antiga, nova) {
 
 function copia (grid) {
   let novo = []
-  for (let l = 0; l < numLinhas; l++) {
+  for (let l = 0; l < linhas; l++) {
     novo[l] = []
-    for (let c = 0; c < numCol; c++) {
+    for (let c = 0; c < colunas; c++) {
       novo[l][c] = grid[l][c]
     }
   }
@@ -78,8 +73,8 @@ function copia (grid) {
 }
 
 let mudou = false
+let antiga = input
 let quantidade = 1
-let antiga = matriz
 
 do {
   mudou = false
