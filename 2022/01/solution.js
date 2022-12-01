@@ -13,7 +13,6 @@ const backpacks = file.split('\n\n').map(items => {
   return backpack
 })
 
-// Somo as kcal
 function sum_kcals (backpack) {
   backpack.total = backpack.foods.reduce((a, b) => a + +b, 0)
 }
