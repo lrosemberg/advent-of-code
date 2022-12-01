@@ -10,17 +10,17 @@ const backpacks = file.split('\n\n').map(items => {
     foods: items.split('\n'),
     total: 0
   }
-
-  let sum = 0
-  for (let food of backpack.foods) {
-    food = Number(food)
-    sum += food
-  }
-
-  backpack.total = sum
-
   return backpack
 })
+
+// Somo as kcal
+function sum_kcals (backpack) {
+  backpack.total = backpack.foods.reduce((a, b) => a + +b, 0)
+}
+
+for (let backpack of backpacks) {
+  sum_kcals(backpack)
+}
 
 // Part 1
 const bigger = backpacks.reduce((prev, curr) => Math.max(prev, curr.total), 0)
